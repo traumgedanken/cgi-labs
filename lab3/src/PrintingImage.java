@@ -189,18 +189,17 @@ public class PrintingImage extends Application {
 		Group group = new Group();
 		Line[] rays = new Line[] {
 				new Line(0, 50, 0, 80),
-				new Line(0, -50, 0, -80),
+				new Line(25, 43, 40, 69),
+				new Line(43, 25, 69, 40),
 				new Line(50, 0, 80, 0),
+				new Line(43, -25, 69, -40),
+				new Line(25, -43, 40, -69),
+				new Line(0, -50, 0, -80),
+				new Line(-25, -43, -40, -69),
+				new Line(-43, -25, -69, -40),
 				new Line(-50, 0, -80, 0),
-				new Line(-25, 43, -40, 70),
-				new Line(25, -43, 40, -70),
-				new Line(-43, 25, -68, 40),
-				new Line(43, -25, 68, -40),
-				new Line(25, 43, 40, 70),
-				new Line(-25, -43, -40, -70),
-				new Line(25, 43, 40, 70),
-				new Line(43, 25, 70, 40),
-				new Line(-43, -25, -70, -40)
+				new Line(-43, 25, -69, 40),
+				new Line(-25, 43, -40, 69),
 		};
 		for (Line line: rays) {
 			line.setStrokeWidth(5);
@@ -215,6 +214,15 @@ public class PrintingImage extends Application {
 		scene.setFill(Color.BLACK);
 		primaryStage.setScene(scene); // ініціалізуємо сцену
 		primaryStage.show(); // візуалізуємо сцену
+	}
+
+	StrokeTransition createStrokeTransition(Node ray, Color start, Color end) {
+		StrokeTransition transition = new StrokeTransition(Duration.seconds(5), (Line)ray);
+		transition.setCycleCount(FillTransition.INDEFINITE);
+		transition.setAutoReverse(true);
+		transition.setFromValue(start);
+		transition.setToValue(end);
+		return transition;
 	}
 
 	@Override
@@ -260,15 +268,12 @@ public class PrintingImage extends Application {
 		scaleTransitionBody.setCycleCount(ScaleTransition.INDEFINITE);
 
 		List<StrokeTransition> strokeTransitions = new ArrayList<>();
-		for (Node child: rays.getChildren()) {
-			if (child instanceof Line) {
-				StrokeTransition transition = new StrokeTransition(Duration.seconds(5), (Line)child);
-				transition.setCycleCount(FillTransition.INDEFINITE);
-				transition.setAutoReverse(true);
-				transition.setFromValue(Color.ORANGE);
-				transition.setToValue(Color.RED);
-				strokeTransitions.add(transition);
-			}
+		System.out.println(rays.getChildren().size());
+		for (int i = 0; i < rays.getChildren().size(); i += 2) {
+			Node first = rays.getChildren().get(i);
+			Node second = rays.getChildren().get(i + 1);
+			strokeTransitions.add(createStrokeTransition(first, Color.ORANGE, Color.RED));
+			strokeTransitions.add(createStrokeTransition(second, Color.RED, Color.YELLOW));
 		}
 
 		ParallelTransition parTransition = new ParallelTransition();
