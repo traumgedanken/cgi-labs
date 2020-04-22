@@ -8,3 +8,5 @@
 ![lab4 result gif](lab4/result.gif)
 ### Lab5 result
 ![lab5 result gif](lab5/result.gif)
+### Lab6 result
+![lab6 result gif](lab6/result.gif)
